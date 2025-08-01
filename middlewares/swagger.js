@@ -573,6 +573,279 @@ const options = {
           },
           required: ["title", "assignedBy", "athletes"],
         },
+        CoachingCourse: {
+          type: "object",
+          properties: {
+            title: {
+              type: "string",
+              example: "Advanced Running Techniques",
+              description: "Title of the coaching course",
+            },
+            description: {
+              type: "string",
+              example:
+                "Learn advanced running techniques from professional coaches",
+              description: "Detailed description of the course",
+            },
+            coach: {
+              type: "string",
+              format: "objectId",
+              example: "507f1f77bcf86cd799439011",
+              description: "Reference to the coach User",
+            },
+            coverImage: {
+              type: "string",
+              example: "https://example.com/course-cover.jpg",
+              description: "URL to the course cover image",
+            },
+            date: {
+              type: "string",
+              format: "date-time",
+              example: "2024-06-15T10:00:00Z",
+              description: "Date and time of the course",
+            },
+            durationInHours: {
+              type: "number",
+              example: 2,
+              description: "Duration of the course in hours",
+            },
+            capacity: {
+              type: "number",
+              example: 20,
+              description: "Maximum number of attendees",
+            },
+            location: {
+              type: "string",
+              example: "Online",
+              description: "Physical location or 'Online'",
+            },
+            platformLink: {
+              type: "string",
+              example: "https://zoom.us/j/123456789",
+              description: "Online meeting link (if applicable)",
+            },
+            price: {
+              type: "number",
+              example: 99.99,
+              description: "Current price of the course",
+            },
+            regularPrice: {
+              type: "number",
+              example: 129.99,
+              description: "Regular price before discount",
+            },
+            difficultyLevel: {
+              type: "string",
+              enum: ["Beginner", "Intermediate", "Advanced"],
+              example: "Intermediate",
+              description: "Difficulty level of the course",
+            },
+            createdAt: {
+              type: "string",
+              format: "date-time",
+              example: "2024-01-15T10:00:00Z",
+              description: "Creation timestamp",
+            },
+            updatedAt: {
+              type: "string",
+              format: "date-time",
+              example: "2024-01-15T10:00:00Z",
+              description: "Last update timestamp",
+            },
+          },
+          required: [
+            "title",
+            "description",
+            "coach",
+            "date",
+            "durationInHours",
+            "capacity",
+            "location",
+            "price",
+          ],
+        },
+
+        DailyTraining: {
+          type: "object",
+          properties: {
+            dayNumber: {
+              type: "number",
+              example: 1,
+              description: "Day number in the training program",
+            },
+            date: {
+              type: "string",
+              format: "date",
+              example: "2024-06-01",
+              description: "Date of the training day",
+            },
+            title: {
+              type: "string",
+              example: "Base Building - Easy Run",
+              description: "Title of the day's training",
+            },
+            description: {
+              type: "string",
+              example: "30 minute easy run to build aerobic base",
+              description: "Description of the day's workout",
+            },
+            workoutPlan: {
+              type: "string",
+              example: "Run 30 minutes at conversational pace",
+              description: "Detailed workout plan",
+            },
+            durationInMinutes: {
+              type: "number",
+              example: 30,
+              description: "Duration of workout in minutes",
+            },
+            intensityLevel: {
+              type: "string",
+              enum: ["Low", "Moderate", "High", "Very High"],
+              example: "Moderate",
+              description: "Intensity level of the workout",
+            },
+            images: {
+              type: "array",
+              items: {
+                type: "string",
+                example: "https://example.com/workout1.jpg",
+              },
+              description: "Array of image URLs for the workout",
+            },
+            notes: {
+              type: "string",
+              example: "Focus on maintaining good form",
+              description: "Additional notes for the workout",
+            },
+            isRestDay: {
+              type: "boolean",
+              example: false,
+              description: "Whether this is a rest day",
+            },
+          },
+          required: [
+            "dayNumber",
+            "date",
+            "title",
+            "description",
+            "workoutPlan",
+            "durationInMinutes",
+            "intensityLevel",
+          ],
+        },
+
+        TrainingProgramPackage: {
+          type: "object",
+          properties: {
+            title: {
+              type: "string",
+              example: "Advanced Marathon Training Program",
+              description: "Title of the training program package",
+            },
+            description: {
+              type: "string",
+              example:
+                "16-week intensive marathon training program for advanced runners",
+              description: "Detailed description of the package",
+            },
+            coverImage: {
+              type: "string",
+              example: "https://example.com/marathon-program.jpg",
+              description: "URL to the program cover image",
+            },
+            durationInWeeks: {
+              type: "number",
+              example: 16,
+              description: "Duration of the program in weeks",
+            },
+            dailyTrainings: {
+              type: "array",
+              items: {
+                $ref: "#/components/schemas/DailyTraining",
+              },
+              description: "Array of daily training programs",
+            },
+            targetRaceType: {
+              type: "string",
+              example: "Marathon",
+              description: "Type of race this program targets",
+            },
+            startDate: {
+              type: "string",
+              format: "date",
+              example: "2024-06-01",
+              description: "Program start date",
+            },
+            endDate: {
+              type: "string",
+              format: "date",
+              example: "2024-09-15",
+              description: "Program end date",
+            },
+            price: {
+              type: "number",
+              example: 299.99,
+              description: "Current price of the package",
+            },
+            regularPrice: {
+              type: "number",
+              example: 399.99,
+              description: "Regular price before discount",
+            },
+            difficultyLevel: {
+              type: "string",
+              enum: ["Beginner", "Intermediate", "Advanced", "Elite"],
+              example: "Advanced",
+              description: "Difficulty level of the program",
+            },
+            coachBiography: {
+              type: "string",
+              example:
+                "Certified running coach with 10 years of experience training marathoners",
+              description: "Biography of the coach",
+            },
+            coach: {
+              type: "string",
+              format: "objectId",
+              example: "507f1f77bcf86cd799439011",
+              description: "Reference to the coach User",
+            },
+            galleryImages: {
+              type: "array",
+              items: {
+                type: "string",
+                example: "https://example.com/program-gallery1.jpg",
+              },
+              description: "Additional images for the program",
+            },
+            createdAt: {
+              type: "string",
+              format: "date-time",
+              example: "2024-01-15T10:00:00Z",
+              description: "Creation timestamp",
+            },
+            updatedAt: {
+              type: "string",
+              format: "date-time",
+              example: "2024-01-15T10:00:00Z",
+              description: "Last update timestamp",
+            },
+          },
+          required: [
+            "title",
+            "description",
+            "durationInWeeks",
+            "targetRaceType",
+            "startDate",
+            "endDate",
+            "price",
+            "regularPrice",
+            "difficultyLevel",
+            "coachBiography",
+            "coach",
+          ],
+        },
 
         RaceExperience: {
           type: "object",
@@ -676,6 +949,272 @@ const options = {
             "title",
             "experienceText",
           ],
+        },
+
+        TrainingPackageBought: {
+          type: "object",
+          properties: {
+            userId: {
+              type: "string",
+              format: "objectId",
+              example: "507f1f77bcf86cd799439011",
+              description: "Reference to the User who bought the package",
+            },
+            training_program_package_id: {
+              type: "string",
+              format: "objectId",
+              example: "507f1f77bcf86cd799439012",
+              description: "Reference to the TrainingProgramPackage",
+            },
+            paymentStatus: {
+              type: "string",
+              enum: ["pending", "completed", "failed"],
+              example: "completed",
+              description: "Payment status of the purchase",
+            },
+            pollUrl: {
+              type: "string",
+              example: "https://example.com/poll/123",
+            },
+            pricePaid: {
+              type: "number",
+              example: 299.99,
+              description: "Amount paid for the package",
+            },
+            boughtAt: {
+              type: "string",
+              format: "date-time",
+              example: "2024-01-15T10:00:00Z",
+              description: "Timestamp of purchase",
+            },
+          },
+          required: [
+            "userId",
+            "training_program_package_id",
+            "paymentStatus",
+            "pricePaid",
+          ],
+        },
+        Exercise: {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+              example: "Foam Rolling",
+              description: "Name of the exercise",
+            },
+            videoUrl: {
+              type: "string",
+              example: "https://example.com/foam-rolling.mp4",
+              description: "URL to exercise demonstration video",
+            },
+            images: {
+              type: "array",
+              items: {
+                type: "string",
+                example: "https://example.com/exercise1.jpg",
+              },
+              description: "Array of exercise image URLs",
+            },
+            description: {
+              type: "string",
+              example: "Foam rolling for calf muscles",
+              description: "Description of how to perform the exercise",
+            },
+            repetitions: {
+              type: "string",
+              example: "3 sets of 30 seconds",
+              description: "Recommended repetitions/sets",
+            },
+          },
+          required: ["name"],
+        },
+
+        Nutrient: {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+              example: "Omega-3 Fatty Acids",
+              description: "Name of the nutrient",
+            },
+            benefit: {
+              type: "string",
+              example: "Reduces inflammation in joints",
+              description: "Benefit of the nutrient for injury recovery",
+            },
+            recommendedFoods: {
+              type: "array",
+              items: {
+                type: "string",
+                example: "Salmon",
+              },
+              description: "Foods rich in this nutrient",
+            },
+          },
+          required: ["name"],
+        },
+
+        InjuryExerciseSolution: {
+          type: "object",
+          properties: {
+            injuryType: {
+              type: "string",
+              example: "Runner's Knee",
+              description: "Type of injury being addressed",
+            },
+            description: {
+              type: "string",
+              example:
+                "Solutions for patellofemoral pain syndrome common in runners",
+              description: "Description of the injury and solution approach",
+            },
+            exercises: {
+              type: "array",
+              items: {
+                $ref: "#/components/schemas/Exercise",
+              },
+              description: "Recommended exercises for recovery",
+            },
+            nutrients: {
+              type: "array",
+              items: {
+                $ref: "#/components/schemas/Nutrient",
+              },
+              description: "Recommended nutrients for recovery",
+            },
+            difficultyLevel: {
+              type: "string",
+              enum: ["Beginner", "Intermediate", "Advanced"],
+              example: "Intermediate",
+              description: "Difficulty level of the exercises",
+            },
+            price: {
+              type: "number",
+              example: 49.99,
+              description: "Current price of the solution package",
+            },
+            regularPrice: {
+              type: "number",
+              example: 59.99,
+              description: "Regular price before discount",
+            },
+            coverImage: {
+              type: "string",
+              example: "https://example.com/runners-knee-solution.jpg",
+              description: "Cover image for the solution package",
+            },
+            coach: {
+              type: "string",
+              format: "objectId",
+              example: "507f1f77bcf86cd799439011",
+              description: "Reference to the coach who created this solution",
+            },
+            createdAt: {
+              type: "string",
+              format: "date-time",
+              example: "2024-01-15T10:00:00Z",
+              description: "Creation timestamp",
+            },
+            updatedAt: {
+              type: "string",
+              format: "date-time",
+              example: "2024-01-15T10:00:00Z",
+              description: "Last update timestamp",
+            },
+          },
+          required: ["injuryType", "description", "price"],
+        },
+        InjurySolutionPurchase: {
+          type: "object",
+          properties: {
+            userId: {
+              type: "string",
+              format: "objectId",
+              example: "507f1f77bcf86cd799439011",
+              description: "Reference to the User who purchased the solution",
+            },
+            injury_solution_id: {
+              type: "string",
+              format: "objectId",
+              example: "507f1f77bcf86cd799439012",
+              description: "Reference to the InjuryExerciseSolution",
+            },
+            paymentStatus: {
+              type: "string",
+              enum: ["pending", "completed", "failed"],
+              example: "completed",
+              description: "Payment status of the purchase",
+            },
+            pollUrl: {
+              type: "string",
+              example: "https://paymentprovider.com/poll/123",
+              description: "Payment poll URL for tracking payment status",
+            },
+            pricePaid: {
+              type: "number",
+              example: 49.99,
+              description: "Amount paid for the solution",
+            },
+            purchasedAt: {
+              type: "string",
+              format: "date-time",
+              example: "2024-01-15T10:00:00Z",
+              description: "Timestamp of purchase",
+            },
+          },
+          required: [
+            "userId",
+            "injury_solution_id",
+            "paymentStatus",
+            "pricePaid",
+          ],
+        },
+        CourseBooking: {
+          type: "object",
+          properties: {
+            userId: {
+              type: "string",
+              format: "objectId",
+              example: "507f1f77bcf86cd799439011",
+              description: "Reference to the User who booked the course",
+            },
+            courseId: {
+              type: "string",
+              format: "objectId",
+              example: "507f1f77bcf86cd799439012",
+              description: "Reference to the CoachingCourse",
+            },
+            paymentStatus: {
+              type: "string",
+              enum: ["pending", "completed", "failed"],
+              example: "completed",
+              description: "Payment status of the booking",
+            },
+            pollUrl: {
+              type: "string",
+              example: "https://paymentprovider.com/poll/123",
+              description: "Payment poll URL for tracking payment status",
+            },
+            pricePaid: {
+              type: "number",
+              example: 99.99,
+              description: "Amount paid for the course",
+            },
+            bookedAt: {
+              type: "string",
+              format: "date-time",
+              example: "2024-01-15T10:00:00Z",
+              description: "Timestamp of booking",
+            },
+            attendanceStatus: {
+              type: "string",
+              enum: ["not attended", "attended", "cancelled"],
+              example: "not attended",
+              description: "Attendance status of the participant",
+            },
+          },
+          required: ["userId", "courseId", "paymentStatus", "pricePaid"],
         },
 
         Error: {
@@ -808,6 +1347,30 @@ const options = {
         name: "Event Bookings",
         description: "Operations about event bookings",
       },
+      {
+        name: "Products",
+        description: "Operations about products",
+      },
+      {
+        name: "Sports News",
+        description: "Operations about sports news",
+      },
+      {
+        name: "Orders",
+        description: "Operations about product orders",
+      },
+      {
+        name: "Memberships",
+        description: "Operations about memberships",
+      },
+      {
+        name: "Training Programs",
+        description: "Operations about training programs",
+      },
+      {
+        name: "Training Packages Bought",
+        description: "Operations about purchased training packages",
+      },
     ],
   },
   apis: [
@@ -822,6 +1385,11 @@ const options = {
     "./routers/membership_router.js",
     "./routers/training_program_router.js",
     "./routers/race_experience_router.js",
+    "./routers/training_program_package_router.js",
+    "./routers/training_package_bought_router.js",
+    "./routers/injury_exercise_solution_router.js",
+    "./routers/injury_solution_purchase_router.js",
+    "./routers/coaching_course_router.js",
   ],
 };
 
