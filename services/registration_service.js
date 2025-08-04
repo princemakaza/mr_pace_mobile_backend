@@ -1,7 +1,7 @@
-const Athlete = require('../models/registration_model');
+const Athlete = require("../models/registration_model");
 
 const generateRegistrationNumber = () => {
-  return 'MPR' + Math.floor(1000000000 + Math.random() * 9000000000);
+  return "MPR" + Math.floor(1000000000 + Math.random() * 9000000000);
 };
 
 const createRegistration = async (data) => {
@@ -19,7 +19,12 @@ const findByRegistrationNumber = async (regNumber) => {
 };
 
 const findByUserId = async (userId) => {
-  return await Athlete.find({ userId: userId });
+  return await Athlete.find({ userId: userId })
+    .populate({
+      path: "race",
+      model: "races",
+    })
+    .exec();
 };
 
 const updatePaymentStatus = async (regNumber, status) => {
@@ -49,7 +54,7 @@ const getRegistrationById = async (id) => {
 const updateRegistrationById = async (id, updateData) => {
   return await Athlete.findByIdAndUpdate(id, updateData, {
     new: true,
-    runValidators: true
+    runValidators: true,
   });
 };
 
@@ -66,5 +71,5 @@ module.exports = {
   getAllRegistrations,
   getRegistrationById,
   updateRegistrationById,
-  deleteRegistrationById
+  deleteRegistrationById,
 };
