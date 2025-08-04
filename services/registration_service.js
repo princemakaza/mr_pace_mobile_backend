@@ -18,6 +18,10 @@ const findByRegistrationNumber = async (regNumber) => {
   return await Athlete.findOne({ registration_number: regNumber });
 };
 
+const findByUserId = async (userId) => {
+  return await Athlete.find({ userId: userId });
+};
+
 const updatePaymentStatus = async (regNumber, status) => {
   return await Athlete.findOneAndUpdate(
     { registration_number: regNumber },
@@ -33,6 +37,7 @@ const updatePollUrl = async (regNumber, pollUrl) => {
     { new: true }
   );
 };
+
 const getAllRegistrations = async () => {
   return await Athlete.find();
 };
@@ -55,6 +60,7 @@ const deleteRegistrationById = async (id) => {
 module.exports = {
   createRegistration,
   findByRegistrationNumber,
+  findByUserId,
   updatePaymentStatus,
   updatePollUrl,
   getAllRegistrations,

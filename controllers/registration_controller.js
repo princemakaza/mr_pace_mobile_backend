@@ -1,7 +1,7 @@
 const { Paynow } = require("paynow");
-const nodemailer = require('nodemailer');
-const registrationService = require('../services/registration_service');
-require('dotenv').config();
+const nodemailer = require("nodemailer");
+const registrationService = require("../services/registration_service");
+require("dotenv").config();
 
 // Initialize Paynow with environment variables
 const paynow = new Paynow(process.env.PAYNOW_ID, process.env.PAYNOW_KEY);
@@ -10,13 +10,19 @@ paynow.returnUrl = process.env.PAYNOW_RETURN_URL;
 
 // Create email transporter
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: "gmail",
   auth: {
     user: process.env.EMAIL_SENDER,
-    pass: process.env.EMAIL_PASSWORD
-  }
+    pass: process.env.EMAIL_PASSWORD,
+  },
 });
-const sendRegistrationEmail = async (email, registrationNumber, name, raceName) => {
+
+const sendRegistrationEmail = async (
+  email,
+  registrationNumber,
+  name,
+  raceName
+) => {
   const mailOptions = {
     from: process.env.EMAIL_SENDER,
     to: email,
@@ -108,78 +114,93 @@ const sendRegistrationEmail = async (email, registrationNumber, name, raceName) 
           </div>
         </div>
       </div>
-    `
+    `,
   };
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log(`Registration email sent successfully to ${email} for ${raceName}`);
+    console.log(
+      `Registration email sent successfully to ${email} for ${raceName}`
+    );
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error("Error sending email:", error);
     // Do not throw to avoid breaking the flow if email fails
   }
-}
+};
 
 const createRegistration = async (req, res) => {
   try {
     const athlete = await registrationService.createRegistration(req.body);
-    
+
     // Send registration email
     await sendRegistrationEmail(
-      athlete.email, 
+      athlete.email,
       athlete.registration_number,
       `${athlete.firstName} ${athlete.lastName}`,
       athlete.raceName
-
     );
 
     res.status(201).json({
       success: true,
       message: "Registration successful",
-      registration_number: athlete.registration_number
+      registration_number: athlete.registration_number,
     });
   } catch (error) {
     res.status(400).json({
       success: false,
       message: "Registration failed",
-      error: error.message
+      error: error.message,
     });
   }
 };
 
 const payByEcocash = async (req, res) => {
   const { registration_number, phoneNumber } = req.body;
-  
+
   try {
-    const athlete = await registrationService.findByRegistrationNumber(registration_number);
-    
+    const athlete = await registrationService.findByRegistrationNumber(
+      registration_number
+    );
+
     if (!athlete) {
       return res.status(404).json({ error: "Registration not found" });
     }
-    
+
     if (athlete.paymentStatus === "paid") {
       return res.status(400).json({ error: "Payment already completed" });
     }
-    
+
     const invoiceNumber = `INV-${Date.now()}`;
-    const payment = paynow.createPayment(invoiceNumber, `${registration_number}@athlete.com`);
-    
+    const payment = paynow.createPayment(
+      invoiceNumber,
+      `${registration_number}@athlete.com`
+    );
+
     payment.add(athlete.raceEvent, athlete.racePrice);
-    
-    const response = await paynow.sendMobile(payment, phoneNumber, 'ecocash');
-    
+
+    const response = await paynow.sendMobile(payment, phoneNumber, "ecocash");
+
     if (response.success) {
-      await registrationService.updatePollUrl(registration_number, response.pollUrl);
-      await registrationService.updatePaymentStatus(registration_number, "pending");
-      
+      await registrationService.updatePollUrl(
+        registration_number,
+        response.pollUrl
+      );
+      await registrationService.updatePaymentStatus(
+        registration_number,
+        "pending"
+      );
+
       res.json({
         success: true,
         message: "Payment initiated",
         pollUrl: response.pollUrl,
-        registration_number
+        registration_number,
       });
     } else {
-      await registrationService.updatePaymentStatus(registration_number, "failed");
+      await registrationService.updatePaymentStatus(
+        registration_number,
+        "failed"
+      );
       res.status(500).json({ error: response.errors });
     }
   } catch (error) {
@@ -189,28 +210,33 @@ const payByEcocash = async (req, res) => {
 
 const checkPaymentStatus = async (req, res) => {
   const { pollUrl } = req.body;
-  
+
   try {
     const status = await paynow.pollTransaction(pollUrl);
-    const athlete = await Athlete.findOne({ pollUrl });
-    
+    const athlete = await registrationService.findByRegistrationNumber({
+      pollUrl,
+    });
+
     if (!athlete) {
       return res.status(404).json({ error: "Registration not found" });
     }
-    
+
     if (status.status === "paid") {
-      await registrationService.updatePaymentStatus(athlete.registration_number, "paid");
-      return res.json({ 
-        status: "paid", 
+      await registrationService.updatePaymentStatus(
+        athlete.registration_number,
+        "paid"
+      );
+      return res.json({
+        status: "paid",
         message: "Payment successful",
-        registration_number: athlete.registration_number
+        registration_number: athlete.registration_number,
       });
     }
-    
-    res.json({ 
-      status: status.status, 
+
+    res.json({
+      status: status.status,
       message: "Payment not yet completed",
-      registration_number: athlete.registration_number
+      registration_number: athlete.registration_number,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -226,9 +252,25 @@ const getAllRegistrations = async (req, res) => {
   }
 };
 
+const getRegistrationsByUserId = async (req, res) => {
+  try {
+    const athletes = await registrationService.findByUserId(req.params.userId);
+    if (!athletes || athletes.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No registrations found for this user" });
+    }
+    res.status(200).json(athletes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const getRegistrationById = async (req, res) => {
   try {
-    const athlete = await registrationService.getRegistrationById(req.params.id);
+    const athlete = await registrationService.getRegistrationById(
+      req.params.id
+    );
     if (!athlete) {
       return res.status(404).json({ error: "Registration not found" });
     }
@@ -255,7 +297,9 @@ const updateRegistration = async (req, res) => {
 
 const deleteRegistration = async (req, res) => {
   try {
-    const deletedAthlete = await registrationService.deleteRegistrationById(req.params.id);
+    const deletedAthlete = await registrationService.deleteRegistrationById(
+      req.params.id
+    );
     if (!deletedAthlete) {
       return res.status(404).json({ error: "Registration not found" });
     }
@@ -270,7 +314,8 @@ module.exports = {
   payByEcocash,
   checkPaymentStatus,
   getAllRegistrations,
+  getRegistrationsByUserId,
   getRegistrationById,
   updateRegistration,
-  deleteRegistration
+  deleteRegistration,
 };
