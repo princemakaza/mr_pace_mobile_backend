@@ -167,6 +167,11 @@ const options = {
         Registration: {
           type: "object",
           properties: {
+            userId: {
+              type: "string",
+              description: "Reference to User model",
+              example: "507f1f77bcf86cd799439011",
+            },
             firstName: {
               type: "string",
               example: "John",

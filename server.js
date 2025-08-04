@@ -20,9 +20,7 @@ const injurySolutionRouter = require("./routers/injury_exercise_solution_router"
 const injurySolutionPurchaseRouter = require("./routers/injury_solution_purchase_router");
 const coachingCourseRouter = require("./routers/coaching_course_router");
 const courseBookingRouter = require("./routers/course_booking_router");
-
 const setupSwagger = require('./middlewares/swagger'); // Add Swagger setup
-
 // Load environment variables
 dotenv.config();
 // training_packages_bought
@@ -30,7 +28,6 @@ dotenv.config();
 mongoose.connect(process.env.DATABASE_URL || process.env.MONGODB_URI)
   .then(() => console.log("Database connected successfully"))
   .catch((err) => console.error("Error connecting to the database:", err));
-
 const app = express();
 // Middleware
 app.use(cors());

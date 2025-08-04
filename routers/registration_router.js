@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const registrationController = require('../controllers/registration_controller');
+const registrationController = require("../controllers/registration_controller");
 
 /**
  * @swagger
@@ -14,8 +14,12 @@ const registrationController = require('../controllers/registration_controller')
  *         application/json:
  *           schema:
  *             type: object
- *             required: [firstName, lastName, race, raceName, racePrice, raceEvent, dateOfBirth, Gender, phoneNumber, email, t_shirt_size]
+ *             required: [userId, firstName, lastName, race, raceName, racePrice, raceEvent, dateOfBirth, Gender, phoneNumber, email, t_shirt_size]
  *             properties:
+ *               userId:
+ *                 type: string
+ *                 description: ID of the user making the registration
+ *                 example: "60d5ecb54b24a56f8c8d9e6a"
  *               firstName:
  *                 type: string
  *                 example: "John"
@@ -78,7 +82,7 @@ const registrationController = require('../controllers/registration_controller')
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.post('/register', registrationController.createRegistration);
+router.post("/register", registrationController.createRegistration);
 
 /**
  * @swagger
@@ -134,7 +138,7 @@ router.post('/register', registrationController.createRegistration);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.post('/pay/ecocash', registrationController.payByEcocash);
+router.post("/pay/ecocash", registrationController.payByEcocash);
 
 /**
  * @swagger
@@ -180,7 +184,7 @@ router.post('/pay/ecocash', registrationController.payByEcocash);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.post('/check-payment-status', registrationController.checkPaymentStatus);
+router.post("/check-payment-status", registrationController.checkPaymentStatus);
 
 /**
  * @swagger
@@ -204,7 +208,48 @@ router.post('/check-payment-status', registrationController.checkPaymentStatus);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/athletes', registrationController.getAllRegistrations);
+router.get("/athletes", registrationController.getAllRegistrations);
+
+/**
+ * @swagger
+ * /api/v1/register/athletes/user/{userId}:
+ *   get:
+ *     summary: Get all athlete registrations by user ID
+ *     tags: [Registration]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID to get registrations for
+ *         example: "60d5ecb54b24a56f8c8d9e6a"
+ *     responses:
+ *       200:
+ *         description: List of registrations for the specified user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Registration'
+ *       404:
+ *         description: No registrations found for this user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.get(
+  "/athletes/user/:userId",
+  registrationController.getRegistrationsByUserId
+);
 
 /**
  * @swagger
@@ -240,7 +285,7 @@ router.get('/athletes', registrationController.getAllRegistrations);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/athletes/:id', registrationController.getRegistrationById);
+router.get("/athletes/:id", registrationController.getRegistrationById);
 
 /**
  * @swagger
@@ -303,7 +348,7 @@ router.get('/athletes/:id', registrationController.getRegistrationById);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.put('/athletes/:id', registrationController.updateRegistration);
+router.put("/athletes/:id", registrationController.updateRegistration);
 
 /**
  * @swagger
@@ -343,6 +388,6 @@ router.put('/athletes/:id', registrationController.updateRegistration);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.delete('/athletes/:id', registrationController.deleteRegistration);
+router.delete("/athletes/:id", registrationController.deleteRegistration);
 
 module.exports = router;
