@@ -209,37 +209,60 @@ const payByEcocash = async (req, res) => {
 };
 
 const checkPaymentStatus = async (req, res) => {
-  const { pollUrl } = req.body;
+  const { pollUrl, id } = req.body;
+  console.log("📩 Incoming request body:", req.body);
 
   try {
+    // 1️⃣ Poll transaction from Paynow
     const status = await paynow.pollTransaction(pollUrl);
-    const athlete = await registrationService.findByRegistrationNumber({
-      pollUrl,
-    });
+    console.log("✅ Paynow transaction status response:", status);
 
+    // 2️⃣ Find athlete by ID
+    const athlete = await registrationService.getRegistrationById(id);
+    console.log("👤 Fetched athlete:", athlete);
+
+    // Case 1: No athlete found
     if (!athlete) {
+      console.warn("⚠️ No registration found for ID:", id);
       return res.status(404).json({ error: "Registration not found" });
     }
 
-    if (status.status === "paid") {
-      await registrationService.updatePaymentStatus(
-        athlete.registration_number,
-        "paid"
-      );
-      return res.json({
-        status: "paid",
-        message: "Payment successful",
-        registration_number: athlete.registration_number,
-      });
-    }
+    // 3️⃣ Update payment status in DB (store whatever Paynow returned)
+    await registrationService.updateRegistrationById(id, {
+      paymentStatus: status.status,
+    });
 
-    res.json({
+    console.log(
+      `💳 Payment status '${status.status}' updated for registration:`,
+      athlete.registration_number
+    );
+
+    // 4️⃣ Status message mapping
+    const statusMessages = {
+      paid: "Payment successful",
+      cancelled: "Payment was cancelled",
+      failed: "Payment failed",
+      created: "Payment created but not yet sent",
+      sent: "Payment request sent to customer",
+      awaiting_delivery: "Payment confirmed, awaiting delivery",
+      awaiting_confirmation: "Awaiting payment confirmation",
+    };
+
+    const message =
+      statusMessages[status.status?.toLowerCase()] ||
+      "Payment status retrieved";
+
+    // 5️⃣ Return Paynow status with mapped message
+    return res.json({
       status: status.status,
-      message: "Payment not yet completed",
+      message,
       registration_number: athlete.registration_number,
+      pollUrl: pollUrl,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    // Case 5: Any unexpected error
+    console.error("❌ Error checking payment status:", error);
+    return res.status(500).json({ error: error.message });
   }
 };
 

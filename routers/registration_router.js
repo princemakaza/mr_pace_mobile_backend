@@ -144,19 +144,27 @@ router.post("/pay/ecocash", registrationController.payByEcocash);
  * @swagger
  * /api/v1/register/check-payment-status:
  *   post:
- *     summary: Check payment status using poll URL
+ *     summary: Check payment status using poll URL and update athlete record
  *     tags: [Payment]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/PaymentStatusCheck'
- *           example:
- *             pollUrl: "https://www.paynow.co.zw/interface/poll/?guid=abc123"
+ *             type: object
+ *             required:
+ *               - pollUrl
+ *               - id
+ *             properties:
+ *               pollUrl:
+ *                 type: string
+ *                 example: "https://www.paynow.co.zw/interface/poll/?guid=abc123"
+ *               id:
+ *                 type: string
+ *                 example: "64f8b0c2f39d2c5a0c8a0f22"
  *     responses:
  *       200:
- *         description: Payment status retrieved
+ *         description: Payment status retrieved from Paynow
  *         content:
  *           application/json:
  *             schema:
@@ -165,12 +173,16 @@ router.post("/pay/ecocash", registrationController.payByEcocash);
  *                 status:
  *                   type: string
  *                   example: "paid"
+ *                   description: Paynow status (e.g., paid, awaiting delivery, cancelled, failed)
  *                 message:
  *                   type: string
  *                   example: "Payment successful"
  *                 registration_number:
  *                   type: string
  *                   example: "MPR1234567890"
+ *                 pollUrl:
+ *                   type: string
+ *                   example: "https://www.paynow.co.zw/interface/poll/?guid=abc123"
  *       404:
  *         description: Registration not found
  *         content:

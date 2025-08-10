@@ -44,7 +44,16 @@ const registrationSchema = new mongoose.Schema(
     },
     paymentStatus: {
       type: String,
-      enum: ["paid", "pending", "failed", "unpaid"],
+      enum: [
+        "paid",
+        "pending",
+        "failed",
+        "unpaid",
+        "cancelled",
+        "send",
+        "awaiting_delivery",
+        "awaiting_confirmation",
+      ],
       default: "unpaid",
     },
     Gender: {
