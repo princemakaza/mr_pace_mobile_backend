@@ -50,7 +50,7 @@ const registrationSchema = new mongoose.Schema(
         "failed",
         "unpaid",
         "cancelled",
-        "send",
+        "sent",
         "awaiting_delivery",
         "awaiting_confirmation",
       ],
