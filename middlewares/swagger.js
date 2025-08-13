@@ -340,6 +340,27 @@ const options = {
               type: "string",
               example: "123 Main St, City, Country",
             },
+            needsDelivery: {
+              type: "boolean",
+              example: true,
+            },
+            deliveryFee: {
+              type: "number",
+              example: 5.0,
+            },
+            deliveryCoordinates: {
+              type: "object",
+              properties: {
+                latitude: {
+                  type: "number",
+                  example: -17.8292,
+                },
+                longitude: {
+                  type: "number",
+                  example: 31.0522,
+                },
+              },
+            },
             products: {
               type: "array",
               items: {
@@ -374,7 +395,7 @@ const options = {
             },
             totalAmount: {
               type: "number",
-              example: 199.98,
+              example: 204.98,
             },
             paymentOption: {
               type: "string",
@@ -399,6 +420,7 @@ const options = {
           },
           required: [
             "customerName",
+            "customerEmail",
             "customerPhone",
             "shippingAddress",
             "products",
@@ -406,7 +428,6 @@ const options = {
             "paymentOption",
           ],
         },
-
         SportsNews: {
           type: "object",
           properties: {
