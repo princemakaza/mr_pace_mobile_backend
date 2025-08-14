@@ -39,6 +39,11 @@ const orderSchema = new mongoose.Schema({
   },
   pollUrl: {
     type: String,
+    default: "not available",
+  },
+  adminComment: {
+    type: String,
+    default: "not available",
   },
   needsDelivery: {
     type: Boolean,
