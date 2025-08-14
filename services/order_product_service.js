@@ -14,7 +14,7 @@ class OrderProductService {
   // Get all orders
   async getAllOrders() {
     try {
-      return await Order.find().populate('products.productId');
+      return await Order.find().populate("products.productId");
     } catch (error) {
       throw error;
     }
@@ -23,7 +23,7 @@ class OrderProductService {
   // Get order by ID
   async getOrderById(orderId) {
     try {
-      return await Order.findById(orderId).populate('products.productId');
+      return await Order.findById(orderId).populate("products.productId");
     } catch (error) {
       throw error;
     }
@@ -32,7 +32,9 @@ class OrderProductService {
   // Get orders by customer email
   async getOrdersByCustomerEmail(email) {
     try {
-      return await Order.find({ customerEmail: email }).populate('products.productId');
+      return await Order.find({ customerEmail: email }).populate(
+        "products.productId"
+      );
     } catch (error) {
       throw error;
     }
@@ -41,7 +43,9 @@ class OrderProductService {
   // Update order by ID
   async updateOrder(orderId, updateData) {
     try {
-      return await Order.findByIdAndUpdate(orderId, updateData, { new: true }).populate('products.productId');
+      return await Order.findByIdAndUpdate(orderId, updateData, {
+        new: true,
+      }).populate("products.productId");
     } catch (error) {
       throw error;
     }
@@ -63,7 +67,7 @@ class OrderProductService {
         orderId,
         { orderStatus: status },
         { new: true }
-      ).populate('products.productId');
+      ).populate("products.productId");
     } catch (error) {
       throw error;
     }
@@ -76,7 +80,19 @@ class OrderProductService {
         orderId,
         { paymentStatus: status },
         { new: true }
-      ).populate('products.productId');
+      ).populate("products.productId");
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updatePollUrl(orderId, pollUrl) {
+    try {
+      return await Order.findByIdAndUpdate(
+        orderId,
+        { pollUrl },
+        { new: true }
+      ).populate("products.productId");
     } catch (error) {
       throw error;
     }

@@ -340,6 +340,10 @@ const options = {
               type: "string",
               example: "123 Main St, City, Country",
             },
+            pollUrl: {
+              type: "string",
+              example: "https://example.com/poll/123",
+            },
             needsDelivery: {
               type: "boolean",
               example: true,

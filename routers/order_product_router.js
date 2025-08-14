@@ -246,4 +246,99 @@ router.patch("/:id/status", authenticateToken, controller.updateOrderStatus);
  */
 router.patch("/:id/payment", authenticateToken, controller.updatePaymentStatus);
 
+/**
+ * @swagger
+ * /api/v1/order_product_route/pay/ecocash:
+ *   post:
+ *     summary: Pay for order via Ecocash
+ *     tags: [Orders]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               orderId:
+ *                 type: string
+ *                 description: The ID of the order to pay for
+ *               phoneNumber:
+ *                 type: string
+ *                 description: The Ecocash phone number to charge
+ *             required:
+ *               - orderId
+ *               - phoneNumber
+ *     responses:
+ *       200:
+ *         description: Payment initiated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 pollUrl:
+ *                   type: string
+ *                 orderId:
+ *                   type: string
+ *       400:
+ *         description: Bad request (payment already completed)
+ *       404:
+ *         description: Order not found
+ *       500:
+ *         description: Internal server error
+ */
+router.post("/pay/ecocash", controller.payByEcocash);
+
+/**
+ * @swagger
+ * /api/v1/order_product_route/check-payment:
+ *   post:
+ *     summary: Check payment status
+ *     tags: [Orders]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               pollUrl:
+ *                 type: string
+ *                 description: The poll URL from Paynow response
+ *               orderId:
+ *                 type: string
+ *                 description: The ID of the order
+ *             required:
+ *               - pollUrl
+ *               - orderId
+ *     responses:
+ *       200:
+ *         description: Payment status retrieved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *                 orderId:
+ *                   type: string
+ *                 pollUrl:
+ *                   type: string
+ *       404:
+ *         description: Order not found
+ *       500:
+ *         description: Internal server error
+ */
+router.post("/check-payment", controller.checkPaymentStatus);
+
+
 module.exports = router;
