@@ -1,6 +1,14 @@
 const nodemailer = require("nodemailer");
 const orderProductService = require("../services/order_product_service");
+const { Paynow } = require("paynow");
+
 require("dotenv").config();
+require("dotenv").config();
+
+// Initialize Paynow with environment variables
+const paynow = new Paynow(process.env.PAYNOW_ID, process.env.PAYNOW_KEY);
+paynow.resultUrl = process.env.PAYNOW_RESULT_URL;
+paynow.returnUrl = process.env.PAYNOW_RETURN_URL;
 
 // Create email transporter
 const transporter = nodemailer.createTransport({
@@ -352,7 +360,7 @@ class OrderProductController {
         });
       }
 
-      if (order.paymentStatus === "Paid") {
+      if (order.paymentStatus === "paid") {
         return res.status(400).json({
           success: false,
           error: "Payment already completed",
@@ -365,19 +373,18 @@ class OrderProductController {
         `${orderId}@customer.com`
       );
 
-      order.products.forEach((product) => {
-        payment.add(product.name, product.price * product.quantity);
-      });
+      // Use totalAmount directly instead of iterating over products
+      payment.add(`Order #${orderId}`, order.totalAmount);
 
-      if (order.needsDelivery && order.deliveryFee > 0) {
-        payment.add("Delivery Fee", order.deliveryFee);
-      }
-
-      const response = await paynow.sendMobile(payment, mobileNumber, "ecocash");
+      const response = await paynow.sendMobile(
+        payment,
+        mobileNumber,
+        "ecocash"
+      );
 
       if (response.success) {
         await orderProductService.updatePollUrl(orderId, response.pollUrl);
-        await orderProductService.updatePaymentStatus(orderId, "Pending");
+        await orderProductService.updatePaymentStatus(orderId, "pending");
 
         res.json({
           success: true,
@@ -386,7 +393,7 @@ class OrderProductController {
           orderId,
         });
       } else {
-        await orderProductService.updatePaymentStatus(orderId, "Failed");
+        await orderProductService.updatePaymentStatus(orderId, "failed");
         res.status(500).json({
           success: false,
           error: response.errors,
