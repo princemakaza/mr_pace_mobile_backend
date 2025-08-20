@@ -50,15 +50,37 @@ class CourseBookingService {
   // Update payment status
   static async updatePaymentStatus(bookingId, newStatus, pollUrl = null) {
     try {
-      const updateData = { paymentStatus: newStatus };
-      if (pollUrl) updateData.pollUrl = pollUrl;
-      
-      return await CourseBooking.findByIdAndUpdate(
-        bookingId,
-        updateData,
-        { new: true }
-      );
+      // Validate the status against our enum
+      const validStatuses = [
+        "paid",
+        "pending",
+        "failed",
+        "unpaid",
+        "cancelled",
+        "sent",
+        "awaiting_delivery",
+        "awaiting_confirmation",
+      ];
+
+      if (!validStatuses.includes(newStatus)) {
+        throw new Error(`Invalid payment status: ${newStatus}`);
+      }
+
+      const updateData = {
+        paymentStatus: newStatus,
+        updatedAt: new Date(), // Add update timestamp if your schema has it
+      };
+
+      if (pollUrl) {
+        updateData.pollUrl = pollUrl;
+      }
+
+      // Use findByIdAndUpdate with proper options
+      return await CourseBooking.findByIdAndUpdate(bookingId, updateData)
+        .populate("userId", "userName email")
+        .populate("courseId", "title price");
     } catch (error) {
+      console.error("Error updating payment status:", error);
       throw error;
     }
   }
@@ -79,8 +101,10 @@ class CourseBookingService {
   // Get bookings by user
   static async getBookingsByUser(userId) {
     try {
-      return await CourseBooking.find({ userId })
-        .populate("courseId", "title date location");
+      return await CourseBooking.find({ userId }).populate(
+        "courseId",
+        "title date location"
+      );
     } catch (error) {
       throw error;
     }
@@ -89,8 +113,10 @@ class CourseBookingService {
   // Get bookings by course
   static async getBookingsByCourse(courseId) {
     try {
-      return await CourseBooking.find({ courseId })
-        .populate("userId", "userName email");
+      return await CourseBooking.find({ courseId }).populate(
+        "userId",
+        "userName email"
+      );
     } catch (error) {
       throw error;
     }

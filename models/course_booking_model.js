@@ -13,7 +13,16 @@ const courseBookingSchema = new mongoose.Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ["pending", "completed", "failed"],
+    enum: [
+        "paid",
+        "pending",
+        "failed",
+        "unpaid",
+        "cancelled",
+        "sent",
+        "awaiting_delivery",
+        "awaiting_confirmation",
+      ],
     default: "pending",
     required: true,
   },
