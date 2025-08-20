@@ -11,7 +11,7 @@ paynow.resultUrl = process.env.PAYNOW_RESULT_URL;
 paynow.returnUrl = process.env.PAYNOW_RETURN_URL;
 
 // Create email transporter
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: process.env.EMAIL_SENDER,
