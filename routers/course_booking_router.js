@@ -260,4 +260,118 @@ router.get("/course/:courseId", authenticateToken, controller.getBookingsByCours
  */
 router.get("/status/:status", authenticateToken, controller.getBookingsByPaymentStatus);
 
+/**
+ * @swagger
+ * /api/v1/course_bookings/payment/ecocash:
+ *   post:
+ *     summary: Initiate EcoCash payment for a course booking
+ *     tags: [Course Bookings]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               bookingId:
+ *                 type: string
+ *                 description: The booking ID to pay for
+ *                 example: 60d21b4667d0d8992e610c85
+ *               phoneNumber:
+ *                 type: string
+ *                 description: EcoCash phone number
+ *                 example: 0771234567
+ *             required:
+ *               - bookingId
+ *               - phoneNumber
+ *     responses:
+ *       200:
+ *         description: Payment initiated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Payment initiated
+ *                 pollUrl:
+ *                   type: string
+ *                   example: https://www.paynow.co.zw/Interface/CheckPayment/?guid=12345678-1234-1234-1234-123456789012
+ *                 bookingId:
+ *                   type: string
+ *                   example: 60d21b4667d0d8992e610c85
+ *       400:
+ *         description: Payment already completed or invalid request
+ *       404:
+ *         description: Booking not found
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Payment initiation failed
+ */
+router.post("/payment/ecocash", authenticateToken, controller.payByEcocash);
+
+/**
+ * @swagger
+ * /api/v1/course_bookings/payment/status:
+ *   post:
+ *     summary: Check payment status for a booking
+ *     tags: [Course Bookings]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               pollUrl:
+ *                 type: string
+ *                 description: The poll URL from payment initiation
+ *                 example: https://www.paynow.co.zw/Interface/CheckPayment/?guid=12345678-1234-1234-1234-123456789012
+ *               bookingId:
+ *                 type: string
+ *                 description: The booking ID to check status for
+ *                 example: 60d21b4667d0d8992e610c85
+ *             required:
+ *               - pollUrl
+ *               - bookingId
+ *     responses:
+ *       200:
+ *         description: Payment status retrieved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Payment status from Paynow
+ *                   example: paid
+ *                 message:
+ *                   type: string
+ *                   description: Human-readable status message
+ *                   example: Payment successful
+ *                 bookingId:
+ *                   type: string
+ *                   example: 60d21b4667d0d8992e610c85
+ *                 pollUrl:
+ *                   type: string
+ *                   example: https://www.paynow.co.zw/Interface/CheckPayment/?guid=12345678-1234-1234-1234-123456789012
+ *       404:
+ *         description: Booking not found
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Error checking payment status
+ */
+router.post("/payment/status", authenticateToken, controller.checkPaymentStatus);
+
 module.exports = router;
