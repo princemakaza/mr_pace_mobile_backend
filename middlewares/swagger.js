@@ -1420,6 +1420,7 @@ const options = {
     "./routers/injury_exercise_solution_router.js",
     "./routers/injury_solution_purchase_router.js",
     "./routers/coaching_course_router.js",
+    "./routers/course_booking_router.js"
   ],
 };
 
