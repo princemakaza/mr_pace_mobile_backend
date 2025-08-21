@@ -14,20 +14,20 @@ const courseBookingSchema = new mongoose.Schema({
   paymentStatus: {
     type: String,
     enum: [
-        "paid",
-        "pending",
-        "failed",
-        "unpaid",
-        "cancelled",
-        "sent",
-        "awaiting_delivery",
-        "awaiting_confirmation",
-      ],
+      "paid",
+      "pending",
+      "failed",
+      "unpaid",
+      "cancelled",
+      "sent",
+      "awaiting_delivery",
+      "awaiting_confirmation",
+    ],
     default: "pending",
-    required: true,
   },
   pollUrl: {
     type: String, // Optional: link to check payment status
+    default: "not available",
   },
   pricePaid: {
     type: Number,
@@ -41,7 +41,7 @@ const courseBookingSchema = new mongoose.Schema({
     type: String,
     enum: ["not attended", "attended", "cancelled"],
     default: "not attended",
-  }
+  },
 });
 
 module.exports = mongoose.model("CourseBooking", courseBookingSchema);
