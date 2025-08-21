@@ -29,8 +29,8 @@ class CourseBookingService {
   static async getAllBookings() {
     try {
       return await CourseBooking.find()
-        .populate("userId", "userName email")
-        .populate("courseId", "title date");
+        .populate("userId")
+        .populate("courseId");
     } catch (error) {
       throw error;
     }
@@ -102,8 +102,7 @@ class CourseBookingService {
   static async getBookingsByUser(userId) {
     try {
       return await CourseBooking.find({ userId }).populate(
-        "courseId",
-        "title date location"
+        "courseId"
       );
     } catch (error) {
       throw error;
