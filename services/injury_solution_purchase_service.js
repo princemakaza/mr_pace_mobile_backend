@@ -7,7 +7,9 @@ class InjurySolutionPurchaseService {
   static async createPurchase(purchaseData) {
     try {
       // Verify the solution exists
-      const solutionExists = await InjuryExerciseSolution.findById(purchaseData.injury_solution_id);
+      const solutionExists = await InjuryExerciseSolution.findById(
+        purchaseData.injury_solution_id
+      );
       if (!solutionExists) {
         throw new Error("Injury exercise solution not found");
       }
@@ -47,12 +49,27 @@ class InjurySolutionPurchaseService {
     }
   }
 
+  // ✅ New: Update purchase by ID (generic update)
+  static async updatePurchaseById(purchaseId, updateData) {
+    try {
+      return await InjurySolutionPurchase.findByIdAndUpdate(
+        purchaseId,
+        updateData,
+        { new: true } // return updated document
+      )
+        .populate("userId", "userName email")
+        .populate("injury_solution_id", "injuryType price");
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // Update payment status
   static async updatePaymentStatus(purchaseId, newStatus, pollUrl = null) {
     try {
       const updateData = { paymentStatus: newStatus };
       if (pollUrl) updateData.pollUrl = pollUrl;
-      
+
       return await InjurySolutionPurchase.findByIdAndUpdate(
         purchaseId,
         updateData,
@@ -66,8 +83,10 @@ class InjurySolutionPurchaseService {
   // Get purchases by user
   static async getPurchasesByUser(userId) {
     try {
-      return await InjurySolutionPurchase.find({ userId })
-        .populate("injury_solution_id", "injuryType description price");
+      return await InjurySolutionPurchase.find({ userId }).populate(
+        "injury_solution_id",
+        "injuryType description price"
+      );
     } catch (error) {
       throw error;
     }
@@ -76,8 +95,9 @@ class InjurySolutionPurchaseService {
   // Get purchases by solution
   static async getPurchasesBySolution(solutionId) {
     try {
-      return await InjurySolutionPurchase.find({ injury_solution_id: solutionId })
-        .populate("userId", "userName email");
+      return await InjurySolutionPurchase.find({
+        injury_solution_id: solutionId,
+      }).populate("userId", "userName email");
     } catch (error) {
       throw error;
     }

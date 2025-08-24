@@ -186,7 +186,11 @@ router.get("/user/:userId", authenticateToken, controller.getPurchasesByUser);
  *       401:
  *         description: Unauthorized
  */
-router.get("/solution/:solutionId", authenticateToken, controller.getPurchasesBySolution);
+router.get(
+  "/solution/:solutionId",
+  authenticateToken,
+  controller.getPurchasesBySolution
+);
 
 /**
  * @swagger
@@ -216,6 +220,79 @@ router.get("/solution/:solutionId", authenticateToken, controller.getPurchasesBy
  *       401:
  *         description: Unauthorized
  */
-router.get("/status/:status", authenticateToken, controller.getPurchasesByStatus);
+router.get(
+  "/status/:status",
+  authenticateToken,
+  controller.getPurchasesByStatus
+);
 
+/**
+ * @swagger
+ * /api/v1/injury_solution_purchases/pay/ecocash:
+ *   post:
+ *     summary: Pay for injury solution with EcoCash
+ *     tags: [Injury Solution Purchases]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               purchaseId:
+ *                 type: string
+ *                 example: 60d21b4667d0d8992e610c85
+ *               phoneNumber:
+ *                 type: string
+ *                 example: 0771234567
+ *             required:
+ *               - purchaseId
+ *               - phoneNumber
+ *     responses:
+ *       200:
+ *         description: Payment initiated successfully
+ *       404:
+ *         description: Purchase not found
+ *       400:
+ *         description: Payment already completed
+ *       500:
+ *         description: Payment failed
+ */
+router.post("/pay/ecocash", authenticateToken, controller.payByEcocash);
+
+/**
+ * @swagger
+ * /api/v1/injury_solution_purchases/check-payment:
+ *   post:
+ *     summary: Check payment status for a purchase
+ *     tags: [Injury Solution Purchases]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               pollUrl:
+ *                 type: string
+ *                 example: https://www.paynow.co.zw/Interface/CheckPayment/?guid=12345678-1234-1234-1234-123456789012
+ *               purchaseId:
+ *                 type: string
+ *                 example: 60d21b4667d0d8992e610c85
+ *             required:
+ *               - pollUrl
+ *               - purchaseId
+ *     responses:
+ *       200:
+ *         description: Payment status retrieved
+ *       404:
+ *         description: Purchase not found
+ *       500:
+ *         description: Error checking payment status
+ */
+router.post("/check-payment", authenticateToken, controller.checkPaymentStatus);
 module.exports = router;
