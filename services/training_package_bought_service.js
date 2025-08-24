@@ -7,7 +7,9 @@ class TrainingPackageBoughtService {
   static async createPurchase(purchaseData) {
     try {
       // Verify the package exists
-      const packageExists = await TrainingProgramPackage.findById(purchaseData.training_program_package_id);
+      const packageExists = await TrainingProgramPackage.findById(
+        purchaseData.training_program_package_id
+      );
       if (!packageExists) {
         throw new Error("Training program package not found");
       }
@@ -63,8 +65,23 @@ class TrainingPackageBoughtService {
   // Get purchases by user
   static async getPurchasesByUser(userId) {
     try {
-      return await TrainingPackageBought.find({ userId })
-        .populate("training_program_package_id", "title price durationInWeeks");
+      return await TrainingPackageBought.find({ userId }).populate(
+        "training_program_package_id",
+        "title price durationInWeeks"
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Add this method to your TrainingPackageBoughtService class
+  static async updatePurchase(purchaseId, updateData) {
+    try {
+      return await TrainingPackageBought.findByIdAndUpdate(
+        purchaseId,
+        updateData,
+        { new: true }
+      );
     } catch (error) {
       throw error;
     }
@@ -73,8 +90,9 @@ class TrainingPackageBoughtService {
   // Get purchases by package
   static async getPurchasesByPackage(packageId) {
     try {
-      return await TrainingPackageBought.find({ training_program_package_id: packageId })
-        .populate("userId", "userName email");
+      return await TrainingPackageBought.find({
+        training_program_package_id: packageId,
+      }).populate("userId", "userName email");
     } catch (error) {
       throw error;
     }

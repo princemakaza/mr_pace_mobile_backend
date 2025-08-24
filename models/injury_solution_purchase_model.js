@@ -13,12 +13,21 @@ const injurySolutionPurchaseSchema = new mongoose.Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ["pending", "completed", "failed"],
-    required: true,
+    enum: [
+      "paid",
+      "pending",
+      "failed",
+      "unpaid",
+      "cancelled",
+      "sent",
+      "awaiting_delivery",
+      "awaiting_confirmation",
+    ],
     default: "pending",
   },
   pollUrl: {
     type: String, // Optional payment poll URL
+    default: "not available",
   },
   pricePaid: {
     type: Number,

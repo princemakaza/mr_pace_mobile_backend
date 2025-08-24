@@ -183,6 +183,80 @@ router.get("/user/:userId", authenticateToken, controller.getPurchasesByUser);
  *       401:
  *         description: Unauthorized
  */
-router.get("/package/:packageId", authenticateToken, controller.getPurchasesByPackage);
+router.get(
+  "/package/:packageId",
+  authenticateToken,
+  controller.getPurchasesByPackage
+);
+
+/**
+ * @swagger
+ * /api/v1/training_packages_bought/pay/ecocash:
+ *   post:
+ *     summary: Initiate EcoCash payment for a training package
+ *     tags: [Training Packages Bought]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               purchaseId:
+ *                 type: string
+ *                 description: The purchase ID to pay for
+ *               phoneNumber:
+ *                 type: string
+ *                 description: EcoCash phone number
+ *             required:
+ *               - purchaseId
+ *               - phoneNumber
+ *     responses:
+ *       200:
+ *         description: Payment initiated successfully
+ *       404:
+ *         description: Purchase not found
+ *       400:
+ *         description: Payment already completed
+ *       401:
+ *         description: Unauthorized
+ */
+router.post("/pay/ecocash", authenticateToken, controller.payByEcocash);
+
+/**
+ * @swagger
+ * /api/v1/training_packages_bought/check-payment:
+ *   post:
+ *     summary: Check payment status for a training package
+ *     tags: [Training Packages Bought]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               pollUrl:
+ *                 type: string
+ *                 description: The poll URL from Paynow
+ *               id:
+ *                 type: string
+ *                 description: The purchase ID
+ *             required:
+ *               - pollUrl
+ *               - id
+ *     responses:
+ *       200:
+ *         description: Payment status retrieved
+ *       404:
+ *         description: Purchase not found
+ *       401:
+ *         description: Unauthorized
+ */
+router.post("/check-payment", authenticateToken, controller.checkPaymentStatus);
 
 module.exports = router;

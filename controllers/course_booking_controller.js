@@ -30,17 +30,17 @@ const sendBookingEmail = async (email, userName, courseDetails, bookingId) => {
         <div style="max-width: 650px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); overflow: hidden;">
           
           <!-- Header with Logo -->
-          <div style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); padding: 30px 20px; text-align: center; position: relative;">
+          <div style="background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%); padding: 30px 20px; text-align: center; position: relative;">
             <h1 style="color: white; font-size: 28px; margin: 0; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Course Registration Confirmed!</h1>
-            <p style="color: #f0f0ff; font-size: 16px; margin: 8px 0 0 0; font-weight: 300;">${
+            <p style="color: #ffcdd2; font-size: 16px; margin: 8px 0 0 0; font-weight: 300;">${
               courseDetails.title
             }</p>
           </div>
           
           <!-- Success Banner -->
-          <div style="background: linear-gradient(90deg, #4f46e5, #7c3aed); padding: 2px;">
+          <div style="background: linear-gradient(90deg, #d32f2f, #b71c1c); padding: 2px;">
             <div style="background: #f8fafc; padding: 20px; text-align: center;">
-              <div style="display: inline-block; background: #4f46e5; color: white; padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 18px;">
+              <div style="display: inline-block; background: #d32f2f; color: white; padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 18px;">
                 🎉 COURSE REGISTRATION SUCCESSFUL
               </div>
             </div>
@@ -51,15 +51,15 @@ const sendBookingEmail = async (email, userName, courseDetails, bookingId) => {
             <h2 style="color: #1f2937; font-size: 24px; margin: 0 0 20px 0; font-weight: 600;">Hello ${userName},</h2>
             
             <p style="font-size: 17px; color: #374151; line-height: 1.6; margin-bottom: 25px;">
-              Congratulations! You have successfully registered for <strong style="color: #4f46e5;">${
+              Congratulations! You have successfully registered for <strong style="color: #d32f2f;">${
                 courseDetails.title
               }</strong>. 
               We're excited to have you join us for this coaching course!
             </p>
             
             <!-- Course Details Card -->
-            <div style="background: linear-gradient(135deg, #f0f0ff 0%, #ffffff 100%); border: 2px solid #4f46e5; border-radius: 12px; padding: 25px; margin: 25px 0; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);">
-              <h3 style="color: #4f46e5; font-size: 20px; margin: 0 0 15px 0; font-weight: 600;">Course Details</h3>
+            <div style="background: linear-gradient(135deg, #ffebee 0%, #ffffff 100%); border: 2px solid #d32f2f; border-radius: 12px; padding: 25px; margin: 25px 0; box-shadow: 0 4px 12px rgba(211, 47, 47, 0.1);">
+              <h3 style="color: #d32f2f; font-size: 20px; margin: 0 0 15px 0; font-weight: 600;">Course Details</h3>
               
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                 <div>
@@ -100,17 +100,17 @@ const sendBookingEmail = async (email, userName, courseDetails, bookingId) => {
             </div>
             
             <!-- Booking ID -->
-            <div style="background: #f9fafb; border-left: 4px solid #4f46e5; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0;">
+            <div style="background: #f9fafb; border-left: 4px solid #d32f2f; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0;">
               <h3 style="color: #1f2937; font-size: 18px; margin: 0 0 12px 0; font-weight: 600;">📋 Booking Reference</h3>
-              <div style="font-size: 24px; font-weight: 900; color: #4f46e5; font-family: 'Courier New', monospace; letter-spacing: 2px; margin: 8px 0;">${bookingId}</div>
+              <div style="font-size: 24px; font-weight: 900; color: #d32f2f; font-family: 'Courier New', monospace; letter-spacing: 2px; margin: 8px 0;">${bookingId}</div>
               <p style="color: #6b7280; font-size: 14px; margin: 8px 0 0 0;">Keep this reference for payment and future correspondence</p>
             </div>
             
             <!-- Payment Instructions -->
-            <div style="background: #f9fafb; border-left: 4px solid #000000; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0;">
+            <div style="background: #f9fafb; border-left: 4px solid #d32f2f; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0;">
               <h3 style="color: #1f2937; font-size: 18px; margin: 0 0 12px 0; font-weight: 600;">💰 Payment Instructions</h3>
               <p style="font-size: 16px; color: #374151; line-height: 1.6; margin: 0;">
-                Please use your booking reference <strong style="color: #4f46e5;">${bookingId}</strong> 
+                Please use your booking reference <strong style="color: #d32f2f;">${bookingId}</strong> 
                 to proceed with payment via <strong>EcoCash</strong>. You can make payment using the payment link provided in your account.
               </p>
             </div>
@@ -133,7 +133,7 @@ const sendBookingEmail = async (email, userName, courseDetails, bookingId) => {
               
               <p style="font-size: 16px; color: #6b7280; margin: 0;">
                 Best regards,<br>
-                <strong style="color: #4f46e5;">The ${
+                <strong style="color: #d32f2f;">The ${
                   courseDetails.title
                 } Team</strong>
               </p>
@@ -141,7 +141,7 @@ const sendBookingEmail = async (email, userName, courseDetails, bookingId) => {
           </div>
           
           <!-- Footer -->
-          <div style="background: linear-gradient(90deg, #4f46e5, #7c3aed); padding: 2px;">
+          <div style="background: linear-gradient(90deg, #d32f2f, #b71c1c); padding: 2px;">
             <div style="background: #1f2937; padding: 20px; text-align: center;">
               <small style="color: #9ca3af; font-size: 14px;">
                 © ${new Date().getFullYear()} ${
