@@ -67,7 +67,6 @@ class TrainingPackageBoughtService {
     try {
       return await TrainingPackageBought.find({ userId }).populate(
         "training_program_package_id",
-        "title price durationInWeeks"
       );
     } catch (error) {
       throw error;
