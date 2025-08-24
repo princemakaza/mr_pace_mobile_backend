@@ -153,8 +153,8 @@ class TrainingPackageBoughtController {
       );
 
       // Send purchase confirmation email
-      const user = await userService.findById(purchaseData.userId);
-      const trainingProgramPackage = await TrainingProgramPackageService.findById(
+      const user = await userService.getUserById(purchaseData.userId);
+      const trainingProgramPackage = await TrainingProgramPackageService.getPackageById(
         purchaseData.training_program_package_id
       );
 
