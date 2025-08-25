@@ -84,9 +84,7 @@ class InjurySolutionPurchaseService {
   static async getPurchasesByUser(userId) {
     try {
       return await InjurySolutionPurchase.find({ userId }).populate(
-        "injury_solution_id",
-        "injuryType description price"
-      );
+        "injury_solution_id"      );
     } catch (error) {
       throw error;
     }
