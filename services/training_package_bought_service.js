@@ -31,8 +31,8 @@ class TrainingPackageBoughtService {
   static async getAllPurchases() {
     try {
       return await TrainingPackageBought.find()
-        .populate("userId", "userName email")
-        .populate("training_program_package_id", "title price");
+        .populate("userId")
+        .populate("training_program_package_id");
     } catch (error) {
       throw error;
     }
@@ -42,8 +42,8 @@ class TrainingPackageBoughtService {
   static async getPurchaseById(purchaseId) {
     try {
       return await TrainingPackageBought.findById(purchaseId)
-        .populate("userId", "userName email")
-        .populate("training_program_package_id", "title price description");
+        .populate("userId")
+        .populate("training_program_package_id");
     } catch (error) {
       throw error;
     }
