@@ -112,7 +112,11 @@ router.get("/:id", authenticateToken, controller.getMembershipById);
  *       404:
  *         description: Membership not found
  */
-router.get("/user/:userId", authenticateToken, controller.getMembershipByUserId);
+router.get(
+  "/user/:userId",
+  authenticateToken,
+  controller.getMembershipByUserId
+);
 
 /**
  * @swagger
@@ -234,6 +238,72 @@ router.patch("/:id/approve", authenticateToken, controller.approveMembership);
  *       404:
  *         description: Membership not found
  */
-router.get("/:userId/certificate", authenticateToken, controller.generateMembershipCertificate);
+router.get(
+  "/:userId/certificate",
+  authenticateToken,
+  controller.generateMembershipCertificate
+);
+
+/**
+ * @swagger
+ * /api/v1/membership_route/pay/ecocash:
+ *   post:
+ *     summary: Pay for membership with EcoCash
+ *     tags: [Memberships]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               membershipId:
+ *                 type: string
+ *               phoneNumber:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Payment initiated successfully
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Membership not found
+ */
+router.post("/pay/ecocash", authenticateToken, controller.payByEcocash);
+
+/**
+ * @swagger
+ * /api/v1/membership_route/check-payment:
+ *   post:
+ *     summary: Check payment status for membership
+ *     tags: [Memberships]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               pollUrl:
+ *                 type: string
+ *               membershipId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Payment status retrieved
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Membership not found
+ */
+router.post("/check-payment", authenticateToken, controller.checkPaymentStatus);
 
 module.exports = router;

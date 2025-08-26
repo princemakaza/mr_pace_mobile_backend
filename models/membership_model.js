@@ -37,6 +37,24 @@ const membershipSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
+    paymentStatus: {
+    type: String,
+    enum: [
+      "paid",
+      "pending",
+      "failed",
+      "unpaid",
+      "cancelled",
+      "sent",
+      "awaiting_delivery",
+      "awaiting_confirmation",
+    ],
+    default: "pending",
+  },
+  pollUrl: {
+    type: String, // Optional payment poll URL
+    default: "not available",
+  },
   remarks: {
     type: String,
     required: false,
