@@ -518,6 +518,17 @@ const options = {
               enum: ["athlete", "coach", "official"],
               example: "athlete",
             },
+            paymentStatus: {
+              type: "string",
+              enum: ["pending", "completed", "failed"],
+              example: "completed",
+              description: "Payment status of the purchase",
+            },
+            pollUrl: {
+              type: "string",
+              example: "https://paymentprovider.com/poll/123",
+              description: "Payment poll URL for tracking payment status",
+            },
             membershipStatus: {
               type: "string",
               enum: ["pending", "active", "rejected", "graduated"],
@@ -1420,7 +1431,7 @@ const options = {
     "./routers/injury_exercise_solution_router.js",
     "./routers/injury_solution_purchase_router.js",
     "./routers/coaching_course_router.js",
-    "./routers/course_booking_router.js"
+    "./routers/course_booking_router.js",
   ],
 };
 
