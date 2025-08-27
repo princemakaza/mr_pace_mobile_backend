@@ -173,7 +173,7 @@ const payByEcocash = async (req, res) => {
     const invoiceNumber = `INV-${Date.now()}`;
     const payment = paynow.createPayment(
       invoiceNumber,
-      `${registration_number}@athlete.com`
+      "zondaimakaza01@gmail.com"
     );
 
     payment.add(athlete.raceEvent, athlete.racePrice);

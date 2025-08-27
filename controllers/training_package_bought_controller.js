@@ -259,7 +259,7 @@ class TrainingPackageBoughtController {
       const invoiceNumber = `TRAIN-${Date.now()}`;
       const payment = paynow.createPayment(
         invoiceNumber,
-        `${purchaseId}@training.com`
+        `zondaimakaza01@gmail.com"`
       );
 
       payment.add(
