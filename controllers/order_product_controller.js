@@ -370,7 +370,7 @@ class OrderProductController {
       const invoiceNumber = `INV-${Date.now()}`;
       const payment = paynow.createPayment(
         invoiceNumber,
-        `${orderId}@customer.com`
+        "zondaimakaza01@gmail.com"
       );
 
       // Use totalAmount directly instead of iterating over products

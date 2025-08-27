@@ -266,12 +266,12 @@ class MembershipController {
         official: 75,
       };
 
-      const price = membershipPrices[membership.membershipType] || 50;
+      const price =  3.5;
 
       const invoiceNumber = `MEM-INV-${Date.now()}`;
       const payment = paynow.createPayment(
         invoiceNumber,
-        `${membership.userId._id || membership.userId}@mrpace.com`
+        "zondaimakaza01@gmail.com"
       );
 
       payment.add(`MR PACE ${membership.membershipType} Membership`, price);

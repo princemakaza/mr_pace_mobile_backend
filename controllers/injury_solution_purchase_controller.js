@@ -255,7 +255,7 @@ class InjurySolutionPurchaseController {
       const invoiceNumber = `INJ-INV-${Date.now()}`;
       const payment = paynow.createPayment(
         invoiceNumber,
-        `${purchase.userId._id || purchase.userId}@injury.com`
+        "zondaimakaza01@gmail.com"
       );
 
       payment.add(solution.name || "Injury Solution", solution.price);

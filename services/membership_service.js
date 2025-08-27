@@ -19,9 +19,9 @@ class MembershipService {
   async getAllMemberships() {
     try {
       return await Membership.find()
-        .populate("userId", "userName email -_id")
-        .populate("profileId", "firstName lastName profilePicture -_id")
-        .populate("approvedBy", "userName -_id");
+        .populate("userId")
+        .populate("profileId")
+        .populate("approvedBy");
     } catch (error) {
       throw error;
     }
@@ -31,9 +31,9 @@ class MembershipService {
   async getMembershipById(membershipId) {
     try {
       return await Membership.findById(membershipId)
-        .populate("userId", "userName email -_id")
+        .populate("userId", "userName email")
         .populate("profileId")
-        .populate("approvedBy", );
+        .populate("approvedBy" );
     } catch (error) {
       throw error;
     }
@@ -43,9 +43,8 @@ class MembershipService {
   async getMembershipByUserId(userId) {
     try {
       return await Membership.findOne({ userId })
-        .populate("userId", "userName email -_id")
-        .populate("profileId", "firstName lastName profilePicture -_id")
-        .populate("approvedBy", "userName -_id");
+        .populate("userId",)
+        .populate("profileId")
     } catch (error) {
       throw error;
     }
@@ -85,9 +84,9 @@ class MembershipService {
         },
         { new: true }
       )
-        .populate("userId", "userName email -_id")
-        .populate("profileId", "firstName lastName profilePicture")
-        .populate("approvedBy", "userName -_id");
+        .populate("userId")
+        .populate("profileId")
+        .populate("approvedBy");
     } catch (error) {
       throw error;
     }
