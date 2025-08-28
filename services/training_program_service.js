@@ -27,8 +27,8 @@ const createTrainingProgram = async (programData) => {
 const getAllTrainingPrograms = async (filter = {}) => {
   try {
     return await TrainingProgram.find(filter)
-      .populate('assignedBy', 'name email role')
-      .populate('athletes', 'name email');
+      .populate('assignedBy')
+      .populate('athletes');
   } catch (error) {
     throw error;
   }
@@ -38,8 +38,8 @@ const getAllTrainingPrograms = async (filter = {}) => {
 const getTrainingProgramById = async (id) => {
   try {
     const program = await TrainingProgram.findById(id)
-      .populate('assignedBy', 'name email role')
-      .populate('athletes', 'name email');
+      .populate('assignedBy')
+      .populate('athletes');
     if (!program) {
       throw new Error('Training program not found');
     }
@@ -162,8 +162,8 @@ const addAthleteToProgram = async (programId, athleteId) => {
       programId,
       { $addToSet: { athletes: athleteId } },
       { new: true, runValidators: true }
-    ).populate('assignedBy', 'name email role')
-     .populate('athletes', 'name email');
+    ).populate('assignedBy')
+     .populate('athletes');
 
     if (!updatedProgram) {
       throw new Error('Training program not found');
@@ -181,8 +181,8 @@ const removeAthleteFromProgram = async (programId, athleteId) => {
       programId,
       { $pull: { athletes: athleteId } },
       { new: true, runValidators: true }
-    ).populate('assignedBy', 'name email role')
-     .populate('athletes', 'name email');
+    ).populate('assignedBy')
+     .populate('athletes');
 
     if (!updatedProgram) {
       throw new Error('Training program not found');
