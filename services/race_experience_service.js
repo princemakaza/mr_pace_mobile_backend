@@ -10,16 +10,18 @@ class RaceExperienceService {
     }
   }
 
-  static async getAllExperiences() {
-    try {
-      return await RaceExperience.find()
-        .populate('author', 'userName email')
-        .populate('raceId', 'name date')
-        .populate('membershipId', 'membershipNumber');
-    } catch (error) {
-      throw error;
-    }
+static async getAllExperiences() {
+  try {
+    return await RaceExperience.find()
+      .populate('author', 'userName email')
+      .populate('raceId')
+      .populate('membershipId', 'membershipNumber')
+      .populate('likes.userId', 'userName email')
+      .populate('comments.userId', 'userName email');
+  } catch (error) {
+    throw error;
   }
+}
 
   static async getExperienceById(experienceId) {
     try {
@@ -50,7 +52,9 @@ class RaceExperienceService {
       return await RaceExperience.find({ author: userId })
         .populate('author', 'userName email')
         .populate('raceId', 'name date')
-        .populate('membershipId', 'membershipNumber');
+        .populate('membershipId', 'membershipNumber')
+        .populate('likes.userId', 'userName')
+        .populate('comments.userId', 'userName');
     } catch (error) {
       throw error;
     }
