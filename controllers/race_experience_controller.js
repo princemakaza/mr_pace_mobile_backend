@@ -21,7 +21,9 @@ class RaceExperienceController {
 
   static async getExperienceById(req, res, next) {
     try {
-      const experience = await RaceExperienceService.getExperienceById(req.params.id);
+      const experience = await RaceExperienceService.getExperienceById(
+        req.params.id
+      );
       if (!experience) {
         return res.status(404).json({ message: "Experience not found" });
       }
@@ -33,7 +35,9 @@ class RaceExperienceController {
 
   static async getExperiencesByRace(req, res, next) {
     try {
-      const experiences = await RaceExperienceService.getExperiencesByRace(req.params.raceId);
+      const experiences = await RaceExperienceService.getExperiencesByRace(
+        req.params.raceId
+      );
       res.json(experiences);
     } catch (error) {
       next(error);
@@ -42,7 +46,9 @@ class RaceExperienceController {
 
   static async getExperiencesByUser(req, res, next) {
     try {
-      const experiences = await RaceExperienceService.getExperiencesByUser(req.params.userId);
+      const experiences = await RaceExperienceService.getExperiencesByUser(
+        req.params.userId
+      );
       res.json(experiences);
     } catch (error) {
       next(error);
@@ -51,7 +57,10 @@ class RaceExperienceController {
 
   static async updateExperience(req, res, next) {
     try {
-      const experience = await RaceExperienceService.updateExperience(req.params.id, req.body);
+      const experience = await RaceExperienceService.updateExperience(
+        req.params.id,
+        req.body
+      );
       if (!experience) {
         return res.status(404).json({ message: "Experience not found" });
       }
@@ -63,7 +72,9 @@ class RaceExperienceController {
 
   static async deleteExperience(req, res, next) {
     try {
-      const experience = await RaceExperienceService.deleteExperience(req.params.id);
+      const experience = await RaceExperienceService.deleteExperience(
+        req.params.id
+      );
       if (!experience) {
         return res.status(404).json({ message: "Experience not found" });
       }
@@ -75,7 +86,16 @@ class RaceExperienceController {
 
   static async likeExperience(req, res, next) {
     try {
-      const experience = await RaceExperienceService.likeExperience(req.params.id, req.user.id);
+      const { userId } = req.query; // Get user ID from query parameter
+      if (!userId) {
+        return res.status(400).json({ message: "User ID is required" });
+      }
+
+      const experience = await RaceExperienceService.likeExperience(
+        req.params.id,
+        userId // Use user ID from query parameter
+      );
+
       if (!experience) {
         return res.status(404).json({ message: "Experience not found" });
       }
@@ -87,11 +107,20 @@ class RaceExperienceController {
 
   static async addComment(req, res, next) {
     try {
-      const { comment } = req.body;
+      const { comment, userId } = req.body; // Get user ID from request body
       if (!comment) {
         return res.status(400).json({ message: "Comment is required" });
       }
-      const experience = await RaceExperienceService.addComment(req.params.id, req.user.id, comment);
+      if (!userId) {
+        return res.status(400).json({ message: "User ID is required" });
+      }
+
+      const experience = await RaceExperienceService.addComment(
+        req.params.id,
+        userId, // Use user ID from request body
+        comment
+      );
+
       if (!experience) {
         return res.status(404).json({ message: "Experience not found" });
       }

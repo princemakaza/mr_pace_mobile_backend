@@ -257,9 +257,17 @@ router.delete("/:id", authenticateToken, controller.deleteExperience);
  *           type: string
  *         required: true
  *         description: Experience ID
+ *       - in: query
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: User ID who is liking the experience
  *     responses:
  *       200:
  *         description: Experience liked successfully
+ *       400:
+ *         description: User ID is required
  *       401:
  *         description: Unauthorized
  *       404:
@@ -291,13 +299,16 @@ router.post("/:id/like", authenticateToken, controller.likeExperience);
  *             properties:
  *               comment:
  *                 type: string
+ *               userId:
+ *                 type: string
  *             required:
  *               - comment
+ *               - userId
  *     responses:
  *       200:
  *         description: Comment added successfully
  *       400:
- *         description: Comment is required
+ *         description: Comment and User ID are required
  *       401:
  *         description: Unauthorized
  *       404:
